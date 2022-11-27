@@ -1,7 +1,12 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.15)
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
+
+# MSVC runtime library flags are selected by an abstraction.
+if(COMMAND cmake_policy AND POLICY CMP0091)
+  cmake_policy(SET CMP0091 NEW)
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,14 +27,7 @@ add_executable(grpc_node_plugin
 )
 
 if (MSVC)
-  add_definitions(/MTd)
-  foreach(flag_var
-            CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-            CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-          if(${flag_var} MATCHES "/MD")
-            string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-          endif(${flag_var} MATCHES "/MD")
-        endforeach(flag_var)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded$<$<CONFIG:Debug>:Debug>)
 endif (MSVC)
 
 target_include_directories(grpc_node_plugin
