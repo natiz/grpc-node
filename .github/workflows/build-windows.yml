@@ -1,0 +1,20 @@
+name: grpc-tools Build windows on demand
+
+on: workflow_dispatch
+
+jobs:
+  windows_build:
+    name: Windows grpc-tools Build
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [ia32, x64]
+    env:
+      ARCH: ${{matrix.arch}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build
+        run: powershell -File ./packages/grpc-tools/build_binaries.ps1
+        shell: cmd
