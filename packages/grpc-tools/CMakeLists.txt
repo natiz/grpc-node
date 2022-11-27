@@ -12,11 +12,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(PROTOBUF_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf)
-add_subdirectory(${PROTOBUF_ROOT_DIR}/cmake deps/protobuf)
-
 set(protobuf_BUILD_TESTS OFF CACHE BOOL "Build protobuf tests")
 set(protobuf_WITH_ZLIB OFF CACHE BOOL "Build protobuf with zlib.")
+set(PROTOBUF_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf)
+add_subdirectory(${PROTOBUF_ROOT_DIR}/cmake deps/protobuf)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libstdc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")
